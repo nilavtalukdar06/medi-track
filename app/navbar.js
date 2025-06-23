@@ -4,11 +4,29 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const { isSignedIn, isLoaded, user } = useUser();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (
+      user &&
+      user?.publicMetadata?.role === "admin" &&
+      !pathname.startsWith("/admin")
+    ) {
+      redirect("/admin");
+    } else if (
+      user &&
+      !user?.publicMetadata?.is_onboarded &&
+      user?.publicMetadata?.role !== "admin" &&
+      !pathname.startsWith("/onboarding")
+    ) {
+      redirect("/onboarding");
+    }
+  }, [user]);
 
   return (
     <header className="px-7 py-5 flex w-full justify-between items-center gap-x-4">
