@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
   const pathname = usePathname();
 
   return (
@@ -27,11 +27,12 @@ export default function Navbar() {
       {isLoaded ? (
         isSignedIn ? (
           <div className="flex justify-center items-center gap-x-3">
-            {!pathname.startsWith("/admin") && (
-              <Link href="/admin">
-                <p className="text-sm text-gray-600">Admin</p>
-              </Link>
-            )}
+            {!pathname.startsWith("/admin") &&
+              user?.publicMetadata.role === "admin" && (
+                <Link href="/admin">
+                  <p className="text-sm text-gray-600">Admin</p>
+                </Link>
+              )}
             <UserButton />
           </div>
         ) : (
