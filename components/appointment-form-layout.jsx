@@ -24,7 +24,7 @@ export default function AppointmentFormLayout() {
         >
           Hey there 👋
         </motion.h2>
-        <TextAnimate className="text-sm text-gray-400 tracking-wide leading-snug">
+        <TextAnimate className="text-sm text-gray-400 tracking-wide leading-snug text-center">
           Request a new appointment in 10 seconds
         </TextAnimate>
       </div>
