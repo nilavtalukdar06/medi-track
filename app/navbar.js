@@ -17,7 +17,7 @@ export default function Navbar() {
           Medi Track
         </h1>
       </Link>
-      <Button className="bg-[#24ae7c] text-white hover:text-green-600">
+      <Button className="bg-[#24ae7c] text-white hover:bg-green-600">
         <Link href="/sign-in">Sign In</Link>
       </Button>
     </header>
