@@ -2,10 +2,11 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { TextAnimate } from "./magicui/text-animate";
+import AppointmentForm from "./appointment-form";
 
 export default function AppointmentFormLayout() {
   return (
-    <article className="max-w-md p-4 my-4 mx-auto">
+    <article className="max-w-md p-4 mx-auto">
       <motion.div
         className="w-full flex justify-center items-center"
         initial={{ opacity: 0 }}
@@ -26,6 +27,9 @@ export default function AppointmentFormLayout() {
         <TextAnimate className="text-sm text-gray-400 tracking-wide leading-snug">
           Request a new appointment in 10 seconds
         </TextAnimate>
+      </div>
+      <div className="my-6">
+        <AppointmentForm />
       </div>
     </article>
   );
