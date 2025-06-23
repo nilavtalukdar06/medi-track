@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
-export default function AppointmentForm() {
+export default function AppointmentFormLayout() {
   return (
     <article className="max-w-md p-4 my-8 mx-auto">
       <motion.div
