@@ -32,8 +32,8 @@ export default function AppointmentForm() {
         <Label className="text-xs text-gray-500" htmlFor="doctor">
           Doctor
         </Label>
-        <Select className="w-full" id="doctor">
-          <SelectTrigger className="w-full">
+        <Select className="w-full">
+          <SelectTrigger className="w-full" id="doctor">
             <SelectValue placeholder="Select a doctor" />
           </SelectTrigger>
           <SelectContent>
@@ -68,7 +68,7 @@ export default function AppointmentForm() {
           Expected appointment date
         </Label>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
+          <PopoverTrigger asChild id="date">
             <Button
               variant="outline"
               id="date"
@@ -91,7 +91,10 @@ export default function AppointmentForm() {
           </PopoverContent>
         </Popover>
       </div>
-      <Button className="bg-[#24AE7C] hover:bg-green-700 text-white">
+      <Button
+        className="bg-[#24AE7C] hover:bg-green-700 text-white"
+        type="submit"
+      >
         Request Appointment
       </Button>
     </form>
