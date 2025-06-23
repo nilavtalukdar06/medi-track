@@ -1,14 +1,17 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export default async function Navbar() {
-  const { userId } = await auth();
+export default function Navbar() {
+  const { isSignedIn, isLoaded } = useUser();
+  const pathname = usePathname();
 
   return (
-    <header className="px-7 py-5 flex w-full justify-between gap-x-4">
+    <header className="px-7 py-5 flex w-full justify-between items-center gap-x-4">
       <Link className="flex justify-center items-center gap-x-3" href="/">
         <Image
           src="/logo.svg"
@@ -21,17 +24,25 @@ export default async function Navbar() {
           Medi Track
         </h1>
       </Link>
-      {userId ? (
-        <div className="flex justify-center items-center gap-x-3">
-          <Link href="/admin">
-            <p className="text-sm text-gray-600">Admin</p>
+      {isLoaded ? (
+        isSignedIn ? (
+          <div className="flex justify-center items-center gap-x-3">
+            {!pathname.startsWith("/admin") && (
+              <Link href="/admin">
+                <p className="text-sm text-gray-600">Admin</p>
+              </Link>
+            )}
+            <UserButton />
+          </div>
+        ) : (
+          <Link href="/sign-in">
+            <Button className="bg-[#24ae7c] text-white hover:bg-green-600">
+              Sign In
+            </Button>
           </Link>
-          <UserButton />
-        </div>
+        )
       ) : (
-        <Button className="bg-[#24ae7c] text-white hover:bg-green-600">
-          <Link href="/sign-in">Sign In</Link>
-        </Button>
+        <Skeleton className="h-[40px] w-[100px]" />
       )}
     </header>
   );

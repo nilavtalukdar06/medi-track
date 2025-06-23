@@ -73,7 +73,7 @@ export default function AppointmentForm() {
         <Label className="text-xs text-gray-500" htmlFor="reason">
           Reason for appointment
         </Label>
-        <Input placeholder="ex: Annual monthly check-up" id="reason" />
+        <Input placeholder="ex: Annual, monthly check-up" id="reason" />
       </motion.div>
       <motion.div
         className="space-y-1.5"
