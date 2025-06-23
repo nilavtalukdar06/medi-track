@@ -22,13 +22,23 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function AppointmentForm() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
+  const { isSignedIn } = useUser();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isSignedIn) {
+      redirect("/sign-in");
+    }
+  };
 
   return (
-    <form className="flex flex-col gap-y-4">
+    <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
       <motion.div
         className="space-y-1.5"
         initial={{ x: -50, opacity: 0 }}
