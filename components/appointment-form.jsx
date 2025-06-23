@@ -21,6 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import { motion } from "motion/react";
 
 export default function AppointmentForm() {
   const [open, setOpen] = useState(false);
@@ -28,7 +29,12 @@ export default function AppointmentForm() {
 
   return (
     <form className="flex flex-col gap-y-4">
-      <div className="space-y-1.5">
+      <motion.div
+        className="space-y-1.5"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <Label className="text-xs text-gray-500" htmlFor="doctor">
           Doctor
         </Label>
@@ -47,14 +53,24 @@ export default function AppointmentForm() {
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
-      <div className="space-y-1.5">
+      </motion.div>
+      <motion.div
+        className="space-y-1.5"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
         <Label className="text-xs text-gray-500" htmlFor="reason">
           Reason for appointment
         </Label>
         <Input placeholder="ex: Annual monthly check-up" id="reason" />
-      </div>
-      <div className="space-y-1.5">
+      </motion.div>
+      <motion.div
+        className="space-y-1.5"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
         <Label className="text-xs text-gray-500" htmlFor="comments">
           Additional comments/notes
         </Label>
@@ -62,8 +78,13 @@ export default function AppointmentForm() {
           placeholder="ex: Prefer afternoon appointments, if possible"
           id="comments"
         />
-      </div>
-      <div className="space-y-1.5">
+      </motion.div>
+      <motion.div
+        className="space-y-1.5"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
         <Label className="text-xs text-gray-500" htmlFor="date">
           Expected appointment date
         </Label>
@@ -90,13 +111,20 @@ export default function AppointmentForm() {
             />
           </PopoverContent>
         </Popover>
-      </div>
-      <Button
-        className="bg-[#24AE7C] hover:bg-green-700 text-white"
-        type="submit"
+      </motion.div>
+      <motion.div
+        className="w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
       >
-        Request Appointment
-      </Button>
+        <Button
+          className="bg-[#24AE7C] hover:bg-green-700 text-white w-full"
+          type="submit"
+        >
+          Request Appointment
+        </Button>
+      </motion.div>
     </form>
   );
 }
