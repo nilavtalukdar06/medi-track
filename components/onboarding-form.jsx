@@ -22,13 +22,12 @@ import { Textarea } from "./ui/textarea";
 import { motion } from "motion/react";
 import { useState } from "react";
 import Spinner from "./ui/spinner";
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { updateRole } from "@/utils/actions/update-metadata";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingForm() {
   const router = useRouter();
-  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,24 +58,14 @@ export default function OnboardingForm() {
         throw new Error(`error: ${response.status}, ${response.statusText}`);
       }
       await updateRole();
+      toast.success("Onboarding Completed");
+      router.push("/");
     } catch (error) {
       console.error(error.message);
       toast.error("Failed to complete onboarding process");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const updateRole = async () => {
-    await user
-      .update({ publicMetadata: { is_onboarded: true } })
-      .then(() => {
-        toast.success("Onboarding Completed");
-        router.push("/");
-      })
-      .catch((e) => {
-        throw new Error(e);
-      });
   };
 
   return (
@@ -95,7 +84,7 @@ export default function OnboardingForm() {
           id="occupation"
           value={formData.occupation}
           onChange={(e) =>
-            setFormData({ ...formData, occupation: e.target.value.trim() })
+            setFormData({ ...formData, occupation: e.target.value })
           }
           required={true}
         />
