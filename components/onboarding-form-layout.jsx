@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { TextAnimate } from "./magicui/text-animate";
+import OnboardingForm from "./onboarding-form";
 
 export default function OnboardingFormLayout() {
   return (
@@ -27,7 +28,9 @@ export default function OnboardingFormLayout() {
           Complete your onboarding process
         </TextAnimate>
       </div>
-      <div className="my-6"></div>
+      <div className="my-6">
+        <OnboardingForm />
+      </div>
     </article>
   );
 }
