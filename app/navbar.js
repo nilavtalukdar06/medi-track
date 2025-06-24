@@ -26,6 +26,13 @@ export default function Navbar() {
       !pathname.startsWith("/onboarding")
     ) {
       router.push("/onboarding");
+    } else if (
+      user &&
+      user?.publicMetadata?.is_onboarded &&
+      user?.publicMetadata?.role !== "admin" &&
+      pathname.startsWith("/onboarding")
+    ) {
+      router.push("/");
     }
   }, [user]);
 
