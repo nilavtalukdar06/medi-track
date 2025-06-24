@@ -22,8 +22,12 @@ import { Textarea } from "./ui/textarea";
 import { motion } from "motion/react";
 import { useState } from "react";
 import Spinner from "./ui/spinner";
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function OnboardingForm() {
+  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +38,19 @@ export default function OnboardingForm() {
     medical_conditions: "",
     current_medications: "",
   });
+
+  const updateRole = async () => {
+    await user
+      .update({ publicMetadata: { is_onboarded: true } })
+      .then(() => {
+        toast.success("Onboarding Completed");
+        redirect("/");
+      })
+      .catch((e) => {
+        console.error(e.message);
+        toast.error("Failed to complete onboarding process");
+      });
+  };
 
   return (
     <form className="flex flex-col gap-y-4">
