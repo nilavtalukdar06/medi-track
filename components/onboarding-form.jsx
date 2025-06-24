@@ -59,7 +59,17 @@ export default function OnboardingForm() {
       }
       await updateRole();
       toast.success("Onboarding Completed");
-      router.push("/");
+      setFormData({
+        ...formData,
+        occupation: "",
+        gender: "",
+        date_of_birth: "",
+        medical_conditions: "",
+        current_medications: "",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error(error.message);
       toast.error("Failed to complete onboarding process");
