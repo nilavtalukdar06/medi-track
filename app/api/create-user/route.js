@@ -35,7 +35,7 @@ export async function POST(request) {
           {
             message: "user is already present",
           },
-          { status: 200 }
+          { status: 409 }
         );
       }
       await userModel.create({ ...data, user_id: userId });
@@ -47,7 +47,7 @@ export async function POST(request) {
       );
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     return NextResponse.json(
       {
         message: `internal server error, error: ${error.message}`,
