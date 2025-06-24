@@ -95,21 +95,22 @@ export default function OnboardingForm() {
         </Popover>
       </motion.div>
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 gap-3 place-items-center"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3 place-items-center w-full"
         initial={{ x: -50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 w-full">
           <Label className="text-xs text-gray-500" htmlFor="medical-conditions">
             Medical Conditions
           </Label>
           <Textarea
             placeholder="Enter your current medical conditions"
             id="medical-conditions"
+            className="w-full"
           />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 w-full">
           <Label
             className="text-xs text-gray-500"
             htmlFor="current-medications"
@@ -119,6 +120,7 @@ export default function OnboardingForm() {
           <Textarea
             placeholder="Enter your current medications"
             id="current-medications"
+            className="w-full"
           />
         </div>
       </motion.div>
