@@ -21,10 +21,12 @@ import {
 import { Textarea } from "./ui/textarea";
 import { motion } from "motion/react";
 import { useState } from "react";
+import Spinner from "./ui/spinner";
 
 export default function OnboardingForm() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <form className="flex flex-col gap-y-4">
@@ -133,8 +135,9 @@ export default function OnboardingForm() {
         <Button
           className="bg-[#24AE7C] hover:bg-green-700 text-white w-full"
           type="submit"
+          disabled={isLoading}
         >
-          Complete Onboarding
+          {isLoading ? <Spinner /> : "Complete Onboarding"}
         </Button>
       </motion.div>
     </form>
