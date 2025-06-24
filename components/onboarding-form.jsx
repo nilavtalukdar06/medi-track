@@ -27,6 +27,13 @@ export default function OnboardingForm() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    occupation: "",
+    gender: "",
+    date_of_birth: "",
+    medical_conditions: "",
+    current_medications: "",
+  });
 
   return (
     <form className="flex flex-col gap-y-4">
@@ -39,7 +46,14 @@ export default function OnboardingForm() {
         <Label className="text-xs text-gray-500" htmlFor="occupation">
           Occupation
         </Label>
-        <Input placeholder="ex: Software Engineer" id="occupation" />
+        <Input
+          placeholder="ex: Software Engineer"
+          id="occupation"
+          value={formData.occupation}
+          onChange={(e) =>
+            setFormData({ ...formData, occupation: e.target.value })
+          }
+        />
       </motion.div>
       <motion.div
         className="space-y-1.5"
@@ -50,7 +64,11 @@ export default function OnboardingForm() {
         <Label className="text-xs text-gray-500" htmlFor="gender">
           Gender
         </Label>
-        <Select className="w-full">
+        <Select
+          className="w-full"
+          value={formData.gender}
+          onValueChange={(value) => setFormData({ ...formData, gender: value })}
+        >
           <SelectTrigger className="w-full" id="gender">
             <SelectValue placeholder="Select your gender" />
           </SelectTrigger>
@@ -90,6 +108,10 @@ export default function OnboardingForm() {
               captionLayout="dropdown"
               onSelect={(date) => {
                 setDate(date);
+                setFormData({
+                  ...formData,
+                  date_of_birth: date ? date.toLocaleDateString() : "",
+                });
                 setOpen(false);
               }}
             />
@@ -110,6 +132,10 @@ export default function OnboardingForm() {
             placeholder="Enter your current medical conditions"
             id="medical-conditions"
             className="w-full"
+            value={formData.medical_conditions}
+            onChange={(e) =>
+              setFormData({ ...formData, medical_conditions: e.target.value })
+            }
           />
         </div>
         <div className="space-y-1.5 w-full">
@@ -122,6 +148,10 @@ export default function OnboardingForm() {
           <Textarea
             placeholder="Enter your current medications"
             id="current-medications"
+            value={formData.current_medications}
+            onChange={(e) =>
+              setFormData({ ...formData, current_medications: e.target.value })
+            }
             className="w-full"
           />
         </div>
