@@ -40,6 +40,33 @@ export default function OnboardingForm() {
     current_medications: "",
   });
 
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!formData.date_of_birth || !formData.gender) {
+        toast.error("Incomplete Fields");
+        return;
+      }
+      setIsLoading(true);
+      const response = await fetch("/api/create-user", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}, ${response.statusText}`);
+      }
+      await updateRole();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed to complete onboarding process");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const updateRole = async () => {
     await user
       .update({ publicMetadata: { is_onboarded: true } })
@@ -48,13 +75,12 @@ export default function OnboardingForm() {
         router.push("/");
       })
       .catch((e) => {
-        console.error(e.message);
-        toast.error("Failed to complete onboarding process");
+        throw new Error(e);
       });
   };
 
   return (
-    <form className="flex flex-col gap-y-4">
+    <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
       <motion.div
         className="space-y-1.5"
         initial={{ x: -50, opacity: 0 }}
@@ -69,8 +95,9 @@ export default function OnboardingForm() {
           id="occupation"
           value={formData.occupation}
           onChange={(e) =>
-            setFormData({ ...formData, occupation: e.target.value })
+            setFormData({ ...formData, occupation: e.target.value.trim() })
           }
+          required={true}
         />
       </motion.div>
       <motion.div
@@ -149,6 +176,7 @@ export default function OnboardingForm() {
           <Textarea
             placeholder="Enter your current medical conditions"
             id="medical-conditions"
+            required={true}
             className="w-full"
             value={formData.medical_conditions}
             onChange={(e) =>
@@ -166,6 +194,7 @@ export default function OnboardingForm() {
           <Textarea
             placeholder="Enter your current medications"
             id="current-medications"
+            required={true}
             value={formData.current_medications}
             onChange={(e) =>
               setFormData({ ...formData, current_medications: e.target.value })
