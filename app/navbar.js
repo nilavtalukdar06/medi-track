@@ -4,10 +4,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Navbar() {
+  const router = useRouter();
   const { isSignedIn, isLoaded, user } = useUser();
   const pathname = usePathname();
 
@@ -17,14 +18,14 @@ export default function Navbar() {
       user?.publicMetadata?.role === "admin" &&
       !pathname.startsWith("/admin")
     ) {
-      redirect("/admin");
+      router.push("/admin");
     } else if (
       user &&
       !user?.publicMetadata?.is_onboarded &&
       user?.publicMetadata?.role !== "admin" &&
       !pathname.startsWith("/onboarding")
     ) {
-      redirect("/onboarding");
+      router.push("/onboarding");
     }
   }, [user]);
 

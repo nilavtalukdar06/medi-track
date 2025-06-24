@@ -23,10 +23,11 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import Spinner from "./ui/spinner";
 import { useUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function OnboardingForm() {
+  const router = useRouter();
   const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
@@ -44,7 +45,7 @@ export default function OnboardingForm() {
       .update({ publicMetadata: { is_onboarded: true } })
       .then(() => {
         toast.success("Onboarding Completed");
-        redirect("/");
+        router.push("/");
       })
       .catch((e) => {
         console.error(e.message);

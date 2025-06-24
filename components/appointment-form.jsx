@@ -23,9 +23,10 @@ import {
 import { useState } from "react";
 import { motion } from "motion/react";
 import { useUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function AppointmentForm() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
   const { isSignedIn } = useUser();
@@ -33,7 +34,7 @@ export default function AppointmentForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isSignedIn) {
-      redirect("/sign-in");
+      router.push("/sign-in");
     }
   };
 
