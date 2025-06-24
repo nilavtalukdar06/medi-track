@@ -105,14 +105,14 @@ export default function OnboardingForm() {
             Medical Conditions
           </Label>
           <Textarea
-            placeholder="Enter your currenct medical conditions"
+            placeholder="Enter your current medical conditions"
             id="medical-conditions"
           />
         </div>
         <div className="space-y-1.5">
           <Label
             className="text-xs text-gray-500"
-            htmlFor="currect-medications"
+            htmlFor="current-medications"
           >
             Current Medications
           </Label>
