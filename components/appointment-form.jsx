@@ -24,12 +24,20 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Spinner from "./ui/spinner";
 
 export default function AppointmentForm() {
   const router = useRouter();
+  const { isSignedIn } = useUser();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
-  const { isSignedIn } = useUser();
+  const [isLoading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    doctor: "",
+    reason_for_appointment: "",
+    additional_comments: "",
+    expected_date: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +57,11 @@ export default function AppointmentForm() {
         <Label className="text-xs text-gray-500" htmlFor="doctor">
           Doctor
         </Label>
-        <Select className="w-full">
+        <Select
+          className="w-full"
+          value={formData.doctor}
+          onValueChange={(value) => setFormData({ ...formData, doctor: value })}
+        >
           <SelectTrigger className="w-full" id="doctor">
             <SelectValue placeholder="Select a doctor" />
           </SelectTrigger>
@@ -74,7 +86,15 @@ export default function AppointmentForm() {
         <Label className="text-xs text-gray-500" htmlFor="reason">
           Reason for appointment
         </Label>
-        <Input placeholder="ex: Annual, monthly check-up" id="reason" />
+        <Input
+          placeholder="ex: Annual, monthly check-up"
+          id="reason"
+          value={formData.reason_for_appointment}
+          required={true}
+          onChange={(e) =>
+            setFormData({ ...formData, reason_for_appointment: e.target.value })
+          }
+        />
       </motion.div>
       <motion.div
         className="space-y-1.5"
@@ -88,6 +108,11 @@ export default function AppointmentForm() {
         <Textarea
           placeholder="ex: Prefer afternoon appointments, if possible"
           id="comments"
+          value={formData.additional_comments}
+          required={true}
+          onChange={(e) =>
+            setFormData({ ...formData, additional_comments: e.target.value })
+          }
         />
       </motion.div>
       <motion.div
@@ -117,6 +142,10 @@ export default function AppointmentForm() {
               captionLayout="dropdown"
               onSelect={(date) => {
                 setDate(date);
+                setFormData({
+                  ...formData,
+                  expected_date: date ? date.toLocaleDateString() : "",
+                });
                 setOpen(false);
               }}
             />
@@ -132,8 +161,9 @@ export default function AppointmentForm() {
         <Button
           className="bg-[#24AE7C] hover:bg-green-700 text-white w-full"
           type="submit"
+          disabled={isLoading}
         >
-          Request Appointment
+          {isLoading ? <Spinner /> : "Request Appointment"}
         </Button>
       </motion.div>
     </form>
