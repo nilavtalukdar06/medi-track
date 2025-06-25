@@ -25,13 +25,14 @@ import { motion } from "motion/react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Spinner from "./ui/spinner";
+import toast from "react-hot-toast";
 
 export default function AppointmentForm() {
   const router = useRouter();
   const { isSignedIn } = useUser();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     doctor: "",
     reason_for_appointment: "",
@@ -43,6 +44,41 @@ export default function AppointmentForm() {
     e.preventDefault();
     if (!isSignedIn) {
       router.push("/sign-in");
+    } else {
+      if (!formData.doctor || !formData.expected_date) {
+        toast.error("Complete the form");
+        return;
+      } else {
+        try {
+          setIsLoading(true);
+          const response = await fetch("/api/create-appointment", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error(
+              `error: ${response.status}, ${response.statusText}`
+            );
+          }
+          toast.success("Your request has been forwarded");
+          setFormData({
+            ...formData,
+            doctor: "",
+            reason_for_appointment: "",
+            additional_comments: "",
+            expected_date: "",
+          });
+          setDate(null);
+        } catch (error) {
+          console.error(error.messsage);
+          toast.error("Failed to request appointment");
+        } finally {
+          setIsLoading(false);
+        }
+      }
     }
   };
 
