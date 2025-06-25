@@ -2,6 +2,7 @@ import Navbar from "@/app/navbar";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { TextAnimate } from "@/components/magicui/text-animate";
+import Cards from "@/components/cards";
 
 export default async function AdminPanel() {
   const user = await currentUser();
@@ -20,6 +21,7 @@ export default async function AdminPanel() {
           Start day with managing new appointments
         </TextAnimate>
       </div>
+      <Cards />
     </section>
   );
 }
