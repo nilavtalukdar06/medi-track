@@ -67,6 +67,7 @@ export default function OnboardingForm() {
         medical_conditions: "",
         current_medications: "",
       });
+      setDate(null);
       setTimeout(() => {
         window.location.reload();
       }, 1500);
