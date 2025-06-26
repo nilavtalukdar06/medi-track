@@ -33,6 +33,7 @@ export async function POST(request) {
       await appointmentModel.create({
         ...data,
         created_by: user.primaryEmailAddress.emailAddress,
+        name: user?.fullName || user?.primaryEmailAddress?.emailAddress,
       });
       return NextResponse.json(
         {
