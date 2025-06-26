@@ -17,12 +17,7 @@ export async function GET() {
     } else {
       await connection();
       const result = await appointmentModel.find({});
-      return NextResponse.json(
-        {
-          message: result,
-        },
-        { status: 200 }
-      );
+      return NextResponse.json(result, { status: 200 });
     }
   } catch (error) {
     console.error(error);
