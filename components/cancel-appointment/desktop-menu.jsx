@@ -58,7 +58,7 @@ export default function DesktopMenu({ email, id, status }) {
       <form className="hidden sm:block">
         <DialogTrigger asChild>
           <button
-            className={`${status === "cancelled" && "hidden"} cursor-pointer text-red-500`}
+            className={`${status === "cancelled" && "hidden"} text-center cursor-pointer text-red-500`}
           >
             Cancel
           </button>

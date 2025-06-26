@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import Spinner from "../ui/spinner";
 
-export default function Desktop() {
+export default function Desktop({ email, id, status }) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState(undefined);
@@ -35,7 +35,11 @@ export default function Desktop() {
     <Dialog>
       <form className="hidden sm:block">
         <DialogTrigger asChild>
-          <button className="cursor-pointer text-[#24AE7C]">Schedule</button>
+          <button
+            className={`cursor-pointer text-center text-[#24AE7C] ${status === "accepted" && "hidden"}`}
+          >
+            Schedule
+          </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

@@ -63,9 +63,17 @@ export default function PatientTable() {
                   <p>{item.status.toUpperCase()}</p>
                 </TableCell>
                 <TableCell>{item.doctor}</TableCell>
-                <TableCell className="text-right flex justify-end items-center gap-x-4">
-                  <Desktop />
-                  <Mobile />
+                <TableCell className="flex justify-end items-center gap-x-4">
+                  <Desktop
+                    email={item.created_by}
+                    id={item._id}
+                    status={item.status}
+                  />
+                  <Mobile
+                    email={item.created_by}
+                    id={item._id}
+                    status={item.status}
+                  />
                   <DesktopMenu
                     email={item.created_by}
                     id={item._id}

@@ -57,7 +57,7 @@ export default function MobileMenu({ email, id, status }) {
     <form className="sm:hidden" onSubmit={cancelAppointment}>
       <Drawer>
         <DrawerTrigger
-          className={`cursor-pointer text-red-500 ${status === "cancelled" ? "hidden" : ""}`}
+          className={`cursor-pointer text-center text-red-500 ${status === "cancelled" ? "hidden" : ""}`}
         >
           Cancel
         </DrawerTrigger>

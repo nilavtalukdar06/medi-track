@@ -21,7 +21,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import Spinner from "../ui/spinner";
 
-export default function Mobile() {
+export default function Mobile({ email, id, status }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,9 @@ export default function Mobile() {
   return (
     <form className="sm:hidden">
       <Drawer>
-        <DrawerTrigger className="cursor-pointer text-[#24AE7C]">
+        <DrawerTrigger
+          className={`cursor-pointer text-center text-[#24AE7C] ${status === "accepted" && "hidden"}`}
+        >
           Schedule
         </DrawerTrigger>
         <DrawerContent>
