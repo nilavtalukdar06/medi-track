@@ -25,12 +25,10 @@ export default async function AdminPanel() {
       </div>
       <AppointmentStatistics>
         <Cards />
-      </AppointmentStatistics>
-      <div className="px-6 my-8">
-        <AppointmentStatistics>
+        <div className="px-6 mt-6 mb-12">
           <PatientTable />
-        </AppointmentStatistics>
-      </div>
+        </div>
+      </AppointmentStatistics>
     </section>
   );
 }
