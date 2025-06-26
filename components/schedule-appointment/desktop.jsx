@@ -43,7 +43,8 @@ export default function Desktop() {
               <Input
                 id="reason"
                 name="reason"
-                defaultValue="ex: Annual, montly check-up"
+                required={true}
+                placeholder="ex: Annual, montly check-up"
               />
             </div>
             <div className="grid gap-3">
@@ -51,12 +52,13 @@ export default function Desktop() {
               <Input
                 id="comments"
                 name="comments"
-                defaultValue="Additional Comments"
+                placeholder="Additional Comments"
+                required={true}
               />
             </div>
             <div className="grid gap-3">
-              <div className="flex gap-4">
-                <div className="flex flex-col gap-3">
+              <div className="flex gap-4 w-full">
+                <div className="flex flex-col gap-3 w-full">
                   <Label htmlFor="date-picker" className="px-1">
                     Date
                   </Label>
@@ -65,19 +67,20 @@ export default function Desktop() {
                       <Button
                         variant="outline"
                         id="date-picker"
-                        className="w-32 justify-between font-normal"
+                        className="w-full justify-between font-normal"
                       >
                         {date ? date.toLocaleDateString() : "Select date"}
                         <CalendarIcon />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="w-auto overflow-hidden p-0"
+                      className="overflow-hidden p-0"
                       align="start"
                     >
                       <Calendar
                         mode="single"
                         selected={date}
+                        className="w-full"
                         captionLayout="dropdown"
                         onSelect={(date) => {
                           setDate(date);
@@ -87,13 +90,14 @@ export default function Desktop() {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 w-full">
                   <Label htmlFor="time-picker" className="px-1">
                     Time
                   </Label>
                   <Input
                     type="time"
                     id="time-picker"
+                    required={true}
                     step="1"
                     defaultValue="10:30:00"
                     className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
