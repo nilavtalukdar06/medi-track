@@ -43,7 +43,7 @@ export default function PatientTable() {
           <TableBody>
             {data.map((item) => (
               <TableRow key={item._id}>
-                <TableCell>Phoenix Baker</TableCell>
+                <TableCell>{item.name}</TableCell>
                 <TableCell>Jan 4, 2022</TableCell>
                 <TableCell className="flex bg-[#24AE7C]/10 border-[#24AE7C]/50 border justify-start items-center text-xs px-2 py-1 rounded-full w-fit gap-x-1.5 my-4">
                   <Calendar size={15} color="#24AE7C" />
