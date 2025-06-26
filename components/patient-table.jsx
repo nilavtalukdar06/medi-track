@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Calendar } from "lucide-react";
 import Loader from "./ui/loading";
 import { useContext, useEffect } from "react";
 import { StatisticsContext } from "./appointment-statistics";
@@ -44,12 +43,22 @@ export default function PatientTable() {
             {data.map((item) => (
               <TableRow key={item._id}>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>Jan 4, 2022</TableCell>
-                <TableCell className="flex bg-[#24AE7C]/10 border-[#24AE7C]/50 border justify-start items-center text-xs px-2 py-1 rounded-full w-fit gap-x-1.5 my-4">
-                  <Calendar size={15} color="#24AE7C" />
-                  <p className="text-[#24AE7C]">Scheduled</p>
+                <TableCell>{item.expected_date}</TableCell>
+                <TableCell
+                  className={`flex border justify-start items-center text-xs px-2 py-1 rounded-full w-fit gap-x-1.5 my-4 ${
+                    item.status === "pending" &&
+                    "bg-[#79B5EC]/10 border-[#79B5EC]/50 text-[#79B5EC]"
+                  } ${
+                    item.status === "accepted" &&
+                    "bg-[#24AE7C]/10 border-[#24AE7C]/50 text-[#24AE7C]"
+                  } ${
+                    item.status === "cancelled" &&
+                    "bg-[#F37877]/10 border-[#F37877]/50 text-[#F37877]"
+                  }`}
+                >
+                  <p>{item.status.toUpperCase()}</p>
                 </TableCell>
-                <TableCell>Dr. Alex Ramirez</TableCell>
+                <TableCell>{item.doctor}</TableCell>
                 <TableCell className="text-right flex justify-end items-center gap-x-4">
                   <button className="cursor-pointer text-[#24AE7C]">
                     Schedule
