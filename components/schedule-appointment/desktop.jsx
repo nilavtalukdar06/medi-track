@@ -19,10 +19,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import Spinner from "../ui/spinner";
 
 export default function Desktop() {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState(undefined);
+  const [formData, setFormData] = useState({
+    reason: "",
+    comments: "",
+  });
 
   return (
     <Dialog>
@@ -43,8 +49,12 @@ export default function Desktop() {
               <Input
                 id="reason"
                 name="reason"
+                value={formData.reason}
                 required={true}
                 placeholder="ex: Annual, montly check-up"
+                onChange={(e) =>
+                  setFormData({ ...formData, reason: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-3">
@@ -52,7 +62,11 @@ export default function Desktop() {
               <Input
                 id="comments"
                 name="comments"
+                value={formData.comments}
                 placeholder="Additional Comments"
+                onChange={(e) =>
+                  setFormData({ ...formData, comments: e.target.value })
+                }
                 required={true}
               />
             </div>
@@ -110,8 +124,9 @@ export default function Desktop() {
             <Button
               type="submit"
               className="w-full bg-[#24AE7C] hover:bg-green-600"
+              disabled={isLoading}
             >
-              Schedule Appointment
+              {isLoading ? <Spinner /> : "Schedule Appointment"}
             </Button>
           </DialogFooter>
         </DialogContent>

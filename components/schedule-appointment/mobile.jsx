@@ -19,10 +19,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
+import Spinner from "../ui/spinner";
 
 export default function Mobile() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    reason: "",
+    comments: "",
+  });
 
   return (
     <form className="sm:hidden">
@@ -44,8 +50,12 @@ export default function Mobile() {
                 <Input
                   id="reason"
                   name="reason"
+                  value={formData.reason}
                   required={true}
                   placeholder="ex: Annual, montly check-up"
+                  onChange={(e) =>
+                    setFormData({ ...formData, reason: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-3">
@@ -53,8 +63,12 @@ export default function Mobile() {
                 <Input
                   id="comments"
                   name="comments"
+                  value={formData.comments}
                   required={true}
                   placeholder="Additional Comments"
+                  onChange={(e) =>
+                    setFormData({ ...formData, comments: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-3">
@@ -112,8 +126,9 @@ export default function Mobile() {
             <Button
               type="submit"
               className="w-full bg-[#24AE7C] hover:bg-green-600"
+              disabled={isLoading}
             >
-              Schedule Appointment
+              {isLoading ? <Spinner /> : "Schedule Appointment"}
             </Button>
           </DrawerFooter>
         </DrawerContent>
