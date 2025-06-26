@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import Cards from "@/components/cards";
 import AppointmentStatistics from "@/components/appointment-statistics";
+import PatientTable from "@/components/patient-table";
 
 export default async function AdminPanel() {
   const user = await currentUser();
@@ -25,6 +26,9 @@ export default async function AdminPanel() {
       <AppointmentStatistics>
         <Cards />
       </AppointmentStatistics>
+      <div className="px-6 my-8">
+        <PatientTable />
+      </div>
     </section>
   );
 }
