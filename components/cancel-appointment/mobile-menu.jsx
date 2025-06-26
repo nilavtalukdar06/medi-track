@@ -57,7 +57,7 @@ export default function MobileMenu({ email, id, status }) {
     <form className="sm:hidden" onSubmit={cancelAppointment}>
       <Drawer>
         <DrawerTrigger
-          className={`cursor-pointer text-red-500 ${status === "cancelled" && "hidden"}`}
+          className={`cursor-pointer text-red-500 ${status === "cancelled" ? "hidden" : ""}`}
         >
           Cancel
         </DrawerTrigger>
@@ -68,7 +68,7 @@ export default function MobileMenu({ email, id, status }) {
               Are you sure you want to cancel your appointment
             </DrawerDescription>
           </DrawerHeader>
-          <div className="p-5">
+          <form className="p-5" onSubmit={cancelAppointment}>
             <div className="grid gap-4">
               <div className="grid gap-3">
                 <Label htmlFor="reason">Reason for appointment</Label>
@@ -77,7 +77,7 @@ export default function MobileMenu({ email, id, status }) {
                   name="reason"
                   value={formData.reason}
                   required={true}
-                  placeholder="ex: Annual, montly check-up"
+                  placeholder="ex: Annual, monthly check-up"
                   onChange={(e) =>
                     setFormData({ ...formData, reason: e.target.value })
                   }
@@ -97,12 +97,12 @@ export default function MobileMenu({ email, id, status }) {
                 />
               </div>
             </div>
-          </div>
-          <DrawerFooter>
-            <Button type="submit" variant="destructive" disabled={isLoading}>
-              {isLoading ? <Spinner /> : "Cancel Appointment"}
-            </Button>
-          </DrawerFooter>
+            <DrawerFooter>
+              <Button type="submit" variant="destructive" disabled={isLoading}>
+                {isLoading ? <Spinner /> : "Cancel Appointment"}
+              </Button>
+            </DrawerFooter>
+          </form>
         </DrawerContent>
       </Drawer>
     </form>
