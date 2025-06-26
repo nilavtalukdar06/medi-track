@@ -11,15 +11,47 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Spinner from "../ui/spinner";
+import toast from "react-hot-toast";
+import { StatisticsContext } from "../appointment-statistics";
 
-export default function DesktopMenu() {
+export default function DesktopMenu({ email }) {
+  const { fetchAppointments } = useContext(StatisticsContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     reason: "",
     comments: "",
   });
+
+  const cancelAppointment = async (e) => {
+    try {
+      e.preventDefault();
+      if (!formData.reason || !formData.comments) {
+        toast.error("Fill the form");
+        return;
+      }
+      setIsLoading(true);
+      const response = await fetch("/api/cancel-appointment/send", {
+        method: "POST",
+        body: JSON.stringify({ ...formData, email: email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}, ${response.statusText}`);
+      }
+      toast.success("Cancelled Appointment");
+      setFormData({ ...formData, reason: "", comments: "" });
+      fetchAppointments();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed to cancel the appointment");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog>
@@ -68,6 +100,7 @@ export default function DesktopMenu() {
               variant="destructive"
               className="w-full my-3"
               disabled={isLoading}
+              onClick={cancelAppointment}
             >
               {isLoading ? <Spinner /> : "Cancel Appointment"}
             </Button>
