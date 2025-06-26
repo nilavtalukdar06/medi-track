@@ -66,7 +66,7 @@ export default function PatientTable() {
                 <TableCell className="text-right flex justify-end items-center gap-x-4">
                   <Desktop />
                   <Mobile />
-                  <DesktopMenu />
+                  <DesktopMenu email={item.created_by} />
                   <MobileMenu />
                 </TableCell>
               </TableRow>
