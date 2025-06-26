@@ -1,4 +1,5 @@
 import { CancelAppointment } from "@/components/email/cancel-appointment.jsx";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -6,6 +7,16 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request) {
   try {
+    const { userId } = await auth();
+    const user = await currentUser();
+    if (!userId || user?.privateMetadata?.role !== "admin") {
+      return NextResponse.json(
+        {
+          message: "unauthorized",
+        },
+        { status: 401 }
+      );
+    }
     const { reason, comments, email } = await request.json();
     if (!reason || !comments || !email) {
       return NextResponse.json(
