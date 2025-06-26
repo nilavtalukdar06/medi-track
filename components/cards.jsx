@@ -8,7 +8,13 @@ import { useUser } from "@clerk/nextjs";
 
 export default function Cards() {
   const { user, isSignedIn } = useUser();
-  const { isLoading, fetchAppointments, data } = useContext(StatisticsContext);
+  const {
+    isLoading,
+    fetchAppointments,
+    pendingAppointments,
+    scheduledAppointments,
+    cancelledAppointments,
+  } = useContext(StatisticsContext);
 
   useEffect(() => {
     user &&
@@ -29,7 +35,9 @@ export default function Cards() {
         >
           <div className="flex gap-x-3 justify-start items-center">
             <Calendar color="#FFD147" />
-            <p className="text-2xl font-semibold text-[#FFD147]">94</p>
+            <p className="text-2xl font-semibold text-[#FFD147]">
+              {scheduledAppointments.length}
+            </p>
           </div>
           <p className="mt-5 mb-1 text-sm md:text-base text-gray-600">
             Total number of scheduled appointments
@@ -46,7 +54,9 @@ export default function Cards() {
         >
           <div className="flex gap-x-3 justify-start items-center">
             <Clock color="#79B5EC" />
-            <p className="text-2xl font-semibold text-[#79B5EC]">32</p>
+            <p className="text-2xl font-semibold text-[#79B5EC]">
+              {pendingAppointments.length}
+            </p>
           </div>
           <p className="mt-5 mb-1 text-sm md:text-base text-gray-600">
             Total number of pending appointments
@@ -63,7 +73,9 @@ export default function Cards() {
         >
           <div className="flex gap-x-3 justify-start items-center">
             <TriangleAlert color="#FF4F4E" />
-            <p className="text-2xl font-semibold text-[#FF4F4E]">56</p>
+            <p className="text-2xl font-semibold text-[#FF4F4E]">
+              {cancelledAppointments.length}
+            </p>
           </div>
           <p className="mt-5 mb-1 text-sm md:text-base text-gray-600">
             Total number of cancelled appointments
