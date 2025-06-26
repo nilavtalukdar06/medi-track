@@ -12,6 +12,7 @@ import Loader from "./ui/loading";
 import { useContext, useEffect } from "react";
 import { StatisticsContext } from "./appointment-statistics";
 import { useUser } from "@clerk/nextjs";
+import Desktop from "./schedule-appointment/desktop";
 
 export default function PatientTable() {
   const { fetchAppointments, data, isLoading } = useContext(StatisticsContext);
@@ -60,9 +61,7 @@ export default function PatientTable() {
                 </TableCell>
                 <TableCell>{item.doctor}</TableCell>
                 <TableCell className="text-right flex justify-end items-center gap-x-4">
-                  <button className="cursor-pointer text-[#24AE7C]">
-                    Schedule
-                  </button>
+                  <Desktop />
                   <button className="cursor-pointer text-red-500">
                     Cancel
                   </button>
