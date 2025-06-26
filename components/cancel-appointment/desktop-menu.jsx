@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -10,8 +11,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import Spinner from "../ui/spinner";
 
 export default function DesktopMenu() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    reason: "",
+    comments: "",
+  });
+
   return (
     <Dialog>
       <form className="hidden sm:block">
@@ -31,8 +40,12 @@ export default function DesktopMenu() {
               <Input
                 id="cancel"
                 name="cancel"
+                value={formData.reason}
                 required={true}
                 placeholder="ex: Conflict in time"
+                onChange={(e) =>
+                  setFormData({ ...formData, reason: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-3">
@@ -40,14 +53,23 @@ export default function DesktopMenu() {
               <Input
                 id="comments"
                 name="comments"
+                value={formData.comments}
                 required={true}
                 placeholder="Additional Comments"
+                onChange={(e) =>
+                  setFormData({ ...formData, comments: e.target.value })
+                }
               />
             </div>
           </div>
           <DialogFooter className="w-full">
-            <Button type="submit" variant="destructive" className="w-full my-3">
-              Cancel Appointment
+            <Button
+              type="submit"
+              variant="destructive"
+              className="w-full my-3"
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner /> : "Cancel Appointment"}
             </Button>
           </DialogFooter>
         </DialogContent>
