@@ -16,7 +16,7 @@ import Spinner from "../ui/spinner";
 import toast from "react-hot-toast";
 import { StatisticsContext } from "../appointment-statistics";
 
-export default function DesktopMenu({ email }) {
+export default function DesktopMenu({ email, id, status }) {
   const { fetchAppointments } = useContext(StatisticsContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ export default function DesktopMenu({ email }) {
       setIsLoading(true);
       const response = await fetch("/api/cancel-appointment/send", {
         method: "POST",
-        body: JSON.stringify({ ...formData, email: email }),
+        body: JSON.stringify({ ...formData, email: email, appointment_id: id }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -57,7 +57,11 @@ export default function DesktopMenu({ email }) {
     <Dialog>
       <form className="hidden sm:block">
         <DialogTrigger asChild>
-          <button className="cursor-pointer text-red-500">Cancel</button>
+          <button
+            className={`${status === "cancelled" && "hidden"} cursor-pointer text-red-500`}
+          >
+            Cancel
+          </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

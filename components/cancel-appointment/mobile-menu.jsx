@@ -11,20 +11,54 @@ import {
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Spinner from "../ui/spinner";
+import toast from "react-hot-toast";
+import { StatisticsContext } from "../appointment-statistics";
 
-export default function MobileMenu() {
+export default function MobileMenu({ email, id, status }) {
+  const { fetchAppointments } = useContext(StatisticsContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     reason: "",
     comments: "",
   });
 
+  const cancelAppointment = async (e) => {
+    try {
+      e.preventDefault();
+      if (!formData.reason || !formData.comments) {
+        toast.error("Fill the form");
+        return;
+      }
+      setIsLoading(true);
+      const response = await fetch("/api/cancel-appointment/send", {
+        method: "POST",
+        body: JSON.stringify({ ...formData, email: email, appointment_id: id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}, ${response.statusText}`);
+      }
+      toast.success("Cancelled Appointment");
+      setFormData({ ...formData, reason: "", comments: "" });
+      fetchAppointments();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed to cancel the appointment");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <form className="sm:hidden">
+    <form className="sm:hidden" onSubmit={cancelAppointment}>
       <Drawer>
-        <DrawerTrigger className="cursor-pointer text-red-500">
+        <DrawerTrigger
+          className={`cursor-pointer text-red-500 ${status === "cancelled" && "hidden"}`}
+        >
           Cancel
         </DrawerTrigger>
         <DrawerContent>
