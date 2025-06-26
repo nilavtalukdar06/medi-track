@@ -28,6 +28,7 @@ export default function Desktop() {
   const [formData, setFormData] = useState({
     reason: "",
     comments: "",
+    time: "",
   });
 
   return (
@@ -112,9 +113,13 @@ export default function Desktop() {
                     type="time"
                     id="time-picker"
                     required={true}
+                    value={formData.time}
                     step="1"
                     defaultValue="10:30:00"
                     className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                    onChange={(e) =>
+                      setFormData({ ...formData, time: e.target.value })
+                    }
                   />
                 </div>
               </div>
