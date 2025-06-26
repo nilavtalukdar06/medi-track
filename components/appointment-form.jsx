@@ -72,6 +72,7 @@ export default function AppointmentForm() {
             expected_date: "",
           });
           setDate(null);
+          router.push("/success");
         } catch (error) {
           console.error(error.messsage);
           toast.error("Failed to request appointment");
