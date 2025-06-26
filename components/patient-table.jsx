@@ -14,6 +14,7 @@ import { StatisticsContext } from "./appointment-statistics";
 import { useUser } from "@clerk/nextjs";
 import Desktop from "./schedule-appointment/desktop";
 import Mobile from "./schedule-appointment/mobile";
+import DesktopMenu from "./cancel-appointment/desktop-menu";
 
 export default function PatientTable() {
   const { fetchAppointments, data, isLoading } = useContext(StatisticsContext);
@@ -64,9 +65,7 @@ export default function PatientTable() {
                 <TableCell className="text-right flex justify-end items-center gap-x-4">
                   <Desktop />
                   <Mobile />
-                  <button className="cursor-pointer text-red-500">
-                    Cancel
-                  </button>
+                  <DesktopMenu />
                 </TableCell>
               </TableRow>
             ))}
