@@ -27,7 +27,9 @@ export default async function AdminPanel() {
         <Cards />
       </AppointmentStatistics>
       <div className="px-6 my-8">
-        <PatientTable />
+        <AppointmentStatistics>
+          <PatientTable />
+        </AppointmentStatistics>
       </div>
     </section>
   );

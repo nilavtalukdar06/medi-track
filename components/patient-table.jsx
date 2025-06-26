@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -9,11 +10,21 @@ import {
 } from "@/components/ui/table";
 import { Calendar } from "lucide-react";
 import Loader from "./ui/loading";
+import { useContext, useEffect } from "react";
+import { StatisticsContext } from "./appointment-statistics";
+import { useUser } from "@clerk/nextjs";
 
 export default function PatientTable() {
+  const { fetchAppointments, data, isLoading } = useContext(StatisticsContext);
+  const { user } = useUser();
+
+  useEffect(() => {
+    user && user?.publicMetadata?.role === "admin" && fetchAppointments();
+  }, [user]);
+
   return (
     <section>
-      {true ? (
+      {isLoading ? (
         <div className="w-full flex justify-center items-center">
           <Loader />
         </div>
@@ -30,21 +41,25 @@ export default function PatientTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>Phoenix Baker</TableCell>
-              <TableCell>Jan 4, 2022</TableCell>
-              <TableCell className="flex bg-[#24AE7C]/10 justify-start items-center text-xs px-2 py-1 rounded-full w-fit gap-x-1.5 my-2">
-                <Calendar size={15} color="#24AE7C" />
-                <p className="text-[#24AE7C]">Scheduled</p>
-              </TableCell>
-              <TableCell>Dr. Alex Ramirez</TableCell>
-              <TableCell className="text-right flex justify-end items-center gap-x-4">
-                <button className="cursor-pointer text-[#24AE7C]">
-                  Schedule
-                </button>
-                <button className="cursor-pointer text-red-500">Cancel</button>
-              </TableCell>
-            </TableRow>
+            {data.map((item) => (
+              <TableRow key={item._id}>
+                <TableCell>Phoenix Baker</TableCell>
+                <TableCell>Jan 4, 2022</TableCell>
+                <TableCell className="flex bg-[#24AE7C]/10 border-[#24AE7C]/50 border justify-start items-center text-xs px-2 py-1 rounded-full w-fit gap-x-1.5 my-4">
+                  <Calendar size={15} color="#24AE7C" />
+                  <p className="text-[#24AE7C]">Scheduled</p>
+                </TableCell>
+                <TableCell>Dr. Alex Ramirez</TableCell>
+                <TableCell className="text-right flex justify-end items-center gap-x-4">
+                  <button className="cursor-pointer text-[#24AE7C]">
+                    Schedule
+                  </button>
+                  <button className="cursor-pointer text-red-500">
+                    Cancel
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       )}
