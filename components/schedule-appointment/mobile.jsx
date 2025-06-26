@@ -32,8 +32,10 @@ export default function Mobile() {
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+            <DrawerTitle>Schedule Appointment</DrawerTitle>
+            <DrawerDescription>
+              Please fill in the following details to schedule
+            </DrawerDescription>
           </DrawerHeader>
           <form className="p-5">
             <div className="grid gap-4">
