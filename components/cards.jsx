@@ -2,11 +2,24 @@
 import { Calendar, Clock, TriangleAlert } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import { motion } from "motion/react";
+import { useContext, useEffect } from "react";
+import { StatisticsContext } from "./appointment-statistics";
+import { useUser } from "@clerk/nextjs";
 
 export default function Cards() {
+  const { user, isSignedIn } = useUser();
+  const { isLoading, fetchAppointments, data } = useContext(StatisticsContext);
+
+  useEffect(() => {
+    user &&
+      isSignedIn &&
+      user.publicMetadata?.role === "admin" &&
+      fetchAppointments();
+  }, [user, isSignedIn]);
+
   return (
     <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full place-items-center px-6 py-2">
-      {false ? (
+      {isLoading ? (
         <Skeleton className="w-full h-[145.587px]" />
       ) : (
         <motion.div
@@ -23,7 +36,7 @@ export default function Cards() {
           </p>
         </motion.div>
       )}
-      {false ? (
+      {isLoading ? (
         <Skeleton className="w-full h-[145.587px]" />
       ) : (
         <motion.div
@@ -40,7 +53,7 @@ export default function Cards() {
           </p>
         </motion.div>
       )}
-      {false ? (
+      {isLoading ? (
         <Skeleton className="w-full h-[145.587px]" />
       ) : (
         <motion.div
