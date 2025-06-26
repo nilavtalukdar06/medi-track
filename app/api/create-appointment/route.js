@@ -1,11 +1,12 @@
 import connection from "@/db/mongodb";
 import appointmentModel from "@/model/appointment.model";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
     const { userId } = await auth();
+    const user = await currentUser();
     if (!userId) {
       return NextResponse.json(
         {
@@ -29,7 +30,10 @@ export async function POST(request) {
         );
       }
       await connection();
-      await appointmentModel.create({ ...data, created_by: userId });
+      await appointmentModel.create({
+        ...data,
+        created_by: user.primaryEmailAddress.emailAddress,
+      });
       return NextResponse.json(
         {
           message: "appointment created successfully",
