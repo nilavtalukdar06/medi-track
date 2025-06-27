@@ -1,12 +1,36 @@
+import arcjet, { tokenBucket } from "@arcjet/next";
 import connection from "@/db/mongodb";
 import appointmentModel from "@/model/appointment.model";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+const aj = arcjet({
+  key: process.env.ARCJET_KEY,
+  characteristics: ["userId"],
+  rules: [
+    tokenBucket({
+      mode: "LIVE",
+      refillRate: 5,
+      interval: 10,
+      capacity: 10,
+    }),
+  ],
+});
+
 export async function POST(request) {
   try {
     const { userId } = await auth();
     const user = await currentUser();
+    const decision = await aj.protect(req, { userId, requested: 5 });
+    console.log("Arcjet decision", decision);
+
+    if (decision.isDenied()) {
+      return NextResponse.json(
+        { error: "Too Many Requests", reason: decision.reason },
+        { status: 429 }
+      );
+    }
+
     if (!userId) {
       return NextResponse.json(
         {

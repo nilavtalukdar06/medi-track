@@ -1,3 +1,4 @@
+import arcjet, { tokenBucket } from "@arcjet/next";
 import { CancelAppointment } from "@/components/email/cancel-appointment.jsx";
 import connection from "@/db/mongodb";
 import appointmentModel from "@/model/appointment.model";
@@ -7,10 +8,33 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const aj = arcjet({
+  key: process.env.ARCJET_KEY,
+  characteristics: ["userId"],
+  rules: [
+    tokenBucket({
+      mode: "LIVE",
+      refillRate: 5,
+      interval: 10,
+      capacity: 10,
+    }),
+  ],
+});
+
 export async function POST(request) {
   try {
     const { userId } = await auth();
     const user = await currentUser();
+    const decision = await aj.protect(req, { userId, requested: 5 });
+    console.log("Arcjet decision", decision);
+
+    if (decision.isDenied()) {
+      return NextResponse.json(
+        { error: "Too Many Requests", reason: decision.reason },
+        { status: 429 }
+      );
+    }
+
     if (!userId || user?.privateMetadata?.role !== "admin") {
       return NextResponse.json(
         {
