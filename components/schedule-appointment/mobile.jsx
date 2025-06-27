@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -20,8 +20,11 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import Spinner from "../ui/spinner";
+import toast from "react-hot-toast";
+import { StatisticsContext } from "../appointment-statistics";
 
 export default function Mobile({ email, id, status }) {
+  const { fetchAppointments } = useContext(StatisticsContext);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +33,46 @@ export default function Mobile({ email, id, status }) {
     comments: "",
     time: "",
   });
+
+  const scheduleAppointment = async (e) => {
+    try {
+      e.preventDefault();
+      if (!date) {
+        toast.error("Submit the form");
+        return;
+      }
+      setIsLoading(true);
+      const response = await fetch("/api/schedule-appointment/send", {
+        method: "POST",
+        body: JSON.stringify({
+          ...formData,
+          email: email,
+          appointment_id: id,
+          date: date,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}, ${response.statusText}`);
+      }
+      toast.success("Successfully scheduled appointment");
+      setFormData({
+        ...formData,
+        reason: "",
+        comments: "",
+        time: "",
+        date: undefined,
+      });
+      fetchAppointments();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed to schedule appointment");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <form className="sm:hidden">
@@ -116,9 +159,9 @@ export default function Mobile({ email, id, status }) {
                       type="time"
                       id="time-picker"
                       required={true}
+                      placeholder="10:00:00"
                       value={formData.time}
                       step="1"
-                      defaultValue="10:30:00"
                       className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                       onChange={(e) =>
                         setFormData({ ...formData, time: e.target.value })
@@ -134,6 +177,7 @@ export default function Mobile({ email, id, status }) {
               type="submit"
               className="w-full bg-[#24AE7C] hover:bg-green-600"
               disabled={isLoading}
+              onClick={scheduleAppointment}
             >
               {isLoading ? <Spinner /> : "Schedule Appointment"}
             </Button>
