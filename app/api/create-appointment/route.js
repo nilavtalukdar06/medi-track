@@ -21,7 +21,7 @@ export async function POST(request) {
   try {
     const { userId } = await auth();
     const user = await currentUser();
-    const decision = await aj.protect(req, { userId, requested: 5 });
+    const decision = await aj.protect(request, { userId, requested: 5 });
     console.log("Arcjet decision", decision);
 
     if (decision.isDenied()) {
