@@ -18,10 +18,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Spinner from "../ui/spinner";
+import toast from "react-hot-toast";
+import { StatisticsContext } from "../appointment-statistics";
 
 export default function Desktop({ email, id, status }) {
+  const { fetchAppointments } = useContext(StatisticsContext);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState(undefined);
@@ -31,9 +34,49 @@ export default function Desktop({ email, id, status }) {
     time: "",
   });
 
+  const scheduleAppointment = async (e) => {
+    try {
+      e.preventDefault();
+      if (!date) {
+        toast.error("Submit the form");
+        return;
+      }
+      setIsLoading(true);
+      const response = await fetch("/api/schedule-appointment/send", {
+        method: "POST",
+        body: JSON.stringify({
+          ...formData,
+          email: email,
+          appointment_id: id,
+          date: date,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}, ${response.statusText}`);
+      }
+      toast.success("Successfully scheduled appointment");
+      setFormData({
+        ...formData,
+        reason: "",
+        comments: "",
+        time: "",
+        date: undefined,
+      });
+      fetchAppointments();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed to schedule appointment");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Dialog>
-      <form className="hidden sm:block">
+      <form className="hidden sm:block" onSubmit={scheduleAppointment}>
         <DialogTrigger asChild>
           <button
             className={`cursor-pointer text-center text-[#24AE7C] ${status === "accepted" && "hidden"}`}
@@ -119,7 +162,7 @@ export default function Desktop({ email, id, status }) {
                     required={true}
                     value={formData.time}
                     step="1"
-                    defaultValue="10:30:00"
+                    placeholder="10:30:00"
                     className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                     onChange={(e) =>
                       setFormData({ ...formData, time: e.target.value })
@@ -134,6 +177,7 @@ export default function Desktop({ email, id, status }) {
               type="submit"
               className="w-full bg-[#24AE7C] hover:bg-green-600"
               disabled={isLoading}
+              onClick={scheduleAppointment}
             >
               {isLoading ? <Spinner /> : "Schedule Appointment"}
             </Button>
